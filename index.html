@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SideFare - Rideshare Driver Pricing Tool</title>
+    <meta name="description" content="Calculate fair pricing for off-platform rideshare trips. Designed exclusively for drivers." />
+    <meta name="color-scheme" content="light dark" />
+    <style>
+      /* Preload animation styles */
+      .app-loading {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(to bottom right, #f0f9ff, #e0f2fe);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        z-index: 9999;
+        transition: background 0.3s ease;
+      }
+      
+      @media (prefers-color-scheme: dark) {
+        .app-loading {
+          background: linear-gradient(to bottom right, #111827, #1f2937);
+        }
+        .app-loading-text {
+          color: #e5e7eb !important;
+        }
+        .app-loading-spinner {
+          border-color: rgba(156, 163, 175, 0.2) !important;
+          border-top-color: #9ca3af !important;
+        }
+      }
+      
+      .app-loading-icon {
+        width: 80px;
+        height: 80px;
+        border-radius: 16px;
+        background: linear-gradient(to bottom right, #0ea5e9, #0284c7);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 24px;
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        animation: pulse 2s infinite;
+      }
+      
+      .app-loading-icon svg {
+        width: 40px;
+        height: 40px;
+        color: white;
+      }
+      
+      .app-loading-text {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+        font-size: 18px;
+        font-weight: 600;
+        color: #0284c7;
+        transition: color 0.3s ease;
+      }
+      
+      @keyframes pulse {
+        0% {transform: scale(1);}
+        50% {transform: scale(1.05);}
+        100% {transform: scale(1);}
+      }
+      
+      .app-loading-spinner {
+        width: 30px;
+        height: 30px;
+        border: 3px solid rgba(14, 165, 233, 0.2);
+        border-top-color: #0ea5e9;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+        margin-top: 16px;
+        transition: border-color 0.3s ease;
+      }
+      
+      @keyframes spin {
+        to {transform: rotate(360deg);}
+      }
+    </style>
+    <script>
+      // Check for dark mode preference and apply dark class immediately
+      if (localStorage.getItem('sidefare-data')) {
+        try {
+          const data = JSON.parse(localStorage.getItem('sidefare-data'));
+          if (data && data.theme && data.theme.isDark) {
+            document.documentElement.classList.add('dark');
+          }
+        } catch (e) {
+          // Fallback to system preference
+          if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            document.documentElement.classList.add('dark');
+          }
+        }
+      } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.documentElement.classList.add('dark');
+      }
+    </script>
+  </head>
+  <body>
+    <div id="root">
+      <!-- Initial loading state -->
+      <div class="app-loading">
+        <div class="app-loading-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"></circle>
+            <path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8"></path>
+            <line x1="12" y1="6" x2="12" y2="6"></line>
+            <line x1="12" y1="18" x2="12" y2="18"></line>
+          </svg>
+        </div>
+        <div class="app-loading-text">SideFare</div>
+        <div class="app-loading-spinner"></div>
+      </div>
+    </div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>
